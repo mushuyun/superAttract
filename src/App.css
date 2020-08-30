@@ -4,3 +4,10 @@ body {
   font-weight:  bolder;
   padding: 20px, 60px;
 }
+
+a {
+  text-decoration: none;
+  color: rgb(73, 69, 69);
+  font-size: 22px;
+  font-weight: lighter;
+}
