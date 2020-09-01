@@ -1,7 +1,7 @@
 body {
-  font-family: 'Aclonica', sans-serif;
-  font-family: 'Patrick Hand', cursive;
-  font-weight:  bolder;
+  font-family: 'Aclonica', sans-serif; 
+  font-family: 'Patrick Hand', cursive; 
+  /* font-weight:  bolder; */
   padding: 20px, 60px;
 }
 
