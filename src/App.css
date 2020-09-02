@@ -11,3 +11,6 @@ a {
   font-weight: lighter;
   color: #9F0CE7;
 }
+*{
+  box-sizing: border-box;
+}
