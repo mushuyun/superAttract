@@ -14,6 +14,34 @@ appId: "1:166653231902:web:61fc18d49926a5ba3bbf0f",
 measurementId: "G-E2Q1WJ4SFG"
 };
 
+export const createUserProfileDocument =  async (userAuth, additionalData) =>{
+    if (!userAuth){
+        return;
+    }
+
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+    const snapShot = await userRef.get();
+
+    if(!snapShot.exists){
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            })
+        } catch (error){
+            console.log("error creating user", error.message)
+        }
+    }
+    
+    return userRef;
+    
+}
+
 firebase.initializeApp(firebaseConfig);
 // firebase.initializeApp(Config);
 // firebase.analytics();
