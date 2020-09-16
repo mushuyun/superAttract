@@ -31,7 +31,8 @@ createSelector(
     [selectCollections],
     collections => collections[collectionUrlParam]
 )
-    
+
+// convert back to array to work on pages
 export const selectCollectionsForPreview = createSelector (
     [selectCollections],
     collections => Object.keys(collections).map(key => collections[key])
