@@ -43,8 +43,46 @@ export const createUserProfileDocument =  async (userAuth, additionalData) =>{
 }
 
 firebase.initializeApp(firebaseConfig);
-// firebase.initializeApp(Config);
-// firebase.analytics();
+
+//******! IMPORTANT !*******-the following code is used to add collections 
+// to firestore for once, only in the begining imported to App.js **************
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) =>{
+    const collectionRef = firestore.collection(collectionKey);
+    console.log(collectionRef);
+
+    const batch = firestore.batch();
+    objectsToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, obj);
+    });
+
+   return await batch.commit();
+}
+
+export const convertCollectionsSnapshotToMap = collections =>{
+    const transformedCollection = collections.docs.map(doc =>{
+         const {title, items} = doc.data();
+         
+    // *****the following is eaqul to the above, the above is destructure version****
+        // const title = doc.data().title;
+        // const items = doc.data().items;
+
+        return {
+            // encodedURI gets things not in URL but related to URL
+            routeName: encodeURI(title.toLowerCase()),
+            id: doc.id,
+            title,
+            items
+        };
+    });
+    // console.log(transformedCollection);
+
+    return transformedCollection.reduce((accumulator, collection) =>{
+        accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator;
+    } , {});
+}
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

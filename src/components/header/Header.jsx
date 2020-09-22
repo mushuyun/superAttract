@@ -5,39 +5,44 @@ import { createStructuredSelector } from "reselect";
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import {auth} from "../../firebase/firebase.utils";
 import CartIcon from "../cartIcon/CartIcon";
-import './Header.scss';
+// import './Header.scss';
+import { HeaderContainer, LogoContainer, OptionsContainer, OptionLink, OptionDiv } from "./Header.styles"
+
 import CartDropdown from '../cartDropdown/CartDropdown';
 import { selectCartHidden } from "../../redux/cart/cartSelectors"
 import {  selectCurrentUser } from "../../redux/user/userSelectors"
 
 const Header = ({ currentUser, hidden }) => {
     return(
-    <div className='header'>
-      <Link className='logo-container' to='/'>
+    <HeaderContainer>
+      <LogoContainer to='/'>
         <Logo className='logo' />
-      </Link>
+      </LogoContainer>
 
-      <div className='options'>
-        <Link className='option' to='/shop'>
+      <OptionsContainer>
+        <OptionLink to='/shop'>
           SHOP
-        </Link>
-        <Link className='option' to='/shop'>
+        </OptionLink>
+        <OptionLink to='/shop'>
           CONTACT
-        </Link>
+        </OptionLink>
 
         {/* decide which option to show for signIn & signOut */}
         {
           currentUser ?
-          <div className="option" onClick= { () => auth.signOut() }>SIGN OUT</div>
+          <OptionDiv onClick= { () => auth.signOut() }>SIGN OUT</OptionDiv>
           :
-          <Link className="option" to="/signin">SIGN IN</Link>
+          <OptionLink to="/signin">SIGN IN</OptionLink>
         }
         <CartIcon />
-      </div>
+      </OptionsContainer>
+      
+    {/* Deciding if the CartDropdown should drop or fold */}
       { hidden ? 
         null : <CartDropdown />
       }
-    </div>
+
+    </HeaderContainer>
   );
 }
 

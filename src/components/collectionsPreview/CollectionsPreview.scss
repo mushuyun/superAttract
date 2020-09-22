@@ -9,7 +9,19 @@
       margin-bottom: 25px;
       color: #555754;
     }
-  
+
+    .view-all{
+      color: rgb(165, 14, 224);
+      font-weight: lighter;
+      margin-bottom: 20px;
+      .spec{
+        // font-size:26px;
+        // font-family: fantasy;
+        font-weight: bolder;
+        color: darkorange;
+      }
+    }
+
     .preview {
       display: flex;
       justify-content: space-between;

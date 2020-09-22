@@ -27,13 +27,16 @@ export const selectCollections = createSelector(
 
 // we conver SHOP_DATA to object to make it simple and more efficient, it is called data normalization
 export const selectCollection = collectionUrlParam =>
-createSelector(
-    [selectCollections],
-    collections => collections[collectionUrlParam]
-)
+    createSelector(
+        [selectCollections],
+        collections => (collections ? collections[collectionUrlParam] : null)
+    )
 
 // convert back to array to work on pages
 export const selectCollectionsForPreview = createSelector (
     [selectCollections],
-    collections => Object.keys(collections).map(key => collections[key])
-)
+    collections =>
+        collections ? 
+        Object.keys(collections).map(key => collections[key]) : []
+);
+

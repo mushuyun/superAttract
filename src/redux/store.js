@@ -7,6 +7,7 @@ import rootReducer from "./rootReducer";
 
 const middlewares = [];
 
+// when deployed, people can not see logger state change. The logger only works locally
 if(process.env.NODE_ENV === "development") {
     middlewares.push(logger);
 }

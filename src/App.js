@@ -11,9 +11,14 @@ import CheckOutPage from "./pages/checkOut/CheckOutPage";
 
 import Header from './components/header/Header';
 
-import { auth, createUserProfileDocument, signInWithGoogle } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument, signInWithGoogle} from "./firebase/firebase.utils";
+
+// ****only import in the beginning when load collections to the firestore*****
+// import { addCollectionAndDocuments } from "./firebase/firebase.utils";
+
 import { setCurrentUser } from "./redux/user/userActions";
 import { selectCurrentUser } from "./redux/user/userSelectors";
+import { selectCollectionsForPreview } from './redux/shop/shopSelectors';
 // import { selectCartItems } from './redux/cart/cartSelectors';
 // import { createStore } from 'redux';
 
@@ -23,24 +28,49 @@ class App extends React.Component {
   unsubscribedFromAuth=null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
+  //!!!!!!! IMPORTANT !!!!!!!!--the following code is used to add collections 
+// to firestore for once, only in the begining ****************************
 
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
+  //   const { setCurrentUser, collectionsArray } = this.props;
+
+  //   this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  //     if (userAuth) {
+  //       const userRef = await createUserProfileDocument(userAuth);
+
+  //       userRef.onSnapshot(snapShot => {
+  //         setCurrentUser({
+  //           id: snapShot.id,
+  //           ...snapShot.data()
+  //         });
+  //       });
+  //     }
+
+  //     setCurrentUser(userAuth);
+  //     addCollectionAndDocuments("collections", 
+  //     collectionsArray.map(({title, items})=>({title, items})))
+  //   });
+  // }
+
+    const { setCurrentUser} = this.props;
+
+      this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+        if (userAuth) {
+          const userRef = await createUserProfileDocument(userAuth);
+
+          userRef.onSnapshot(snapShot => {
+            setCurrentUser({
+              id: snapShot.id,
+              ...snapShot.data()
+            });
           });
-        });
-      }
+        }
 
       setCurrentUser(userAuth);
-    });
+    //   addCollectionAndDocuments("collections", 
+    //   collectionsArray.map(({title, items})=>({title, items})))
+     });
   }
-
 
   componentWillUnmount(){
     this.unsubscribedFromAuth()
@@ -67,7 +97,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector ({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatchToProps = dispatch => ({
